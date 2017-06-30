@@ -1,14 +1,22 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import storeConfig from './redux/storeConfig';
-import App from './comps/App';
+import { Route } from 'react-router';
+import { ConnectedRouter } from 'react-router-redux';
+import { store, history } from './redux/config';
 
-const store = storeConfig();
+import App from './comps/App';
+import Board from './comps/Board';
+import Account from './comps/Account';
 
 render(
     <Provider store={store}>
-        <App />
+        <ConnectedRouter history={history}>
+            <div>
+                <Route exact path="/" component={Board} />
+                <Route path="/user" component={Account} />
+            </div>
+        </ConnectedRouter>
     </Provider>,
     document.getElementById('app')
 );
