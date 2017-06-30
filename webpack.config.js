@@ -1,15 +1,14 @@
 var webpack = require('webpack');
 var path = require('path');
 
-module.exports = {
-    devtool: 'eval-source-map',
+var config = {
     entry: [
         'babel-polyfill',
         './src/index.js',
     ],
     output: {
         path: path.join(__dirname, 'dist'),
-        filename: 'bundle.js',
+        filename: 'bundle.js'
     },
     module: {
         loaders: [
@@ -33,11 +32,36 @@ module.exports = {
         ],
     },
     resolve: {
-		extensions: ['.js', '.jsx']
-	},
-    plugins: [
+        extensions: ['.js', '.jsx']
+    }
+}
+
+if (process.env.NODE_ENV === 'production') {
+    config.plugins = [
         new webpack.optimize.OccurrenceOrderPlugin(),
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoEmitOnErrorsPlugin()
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false,
+                screw_ie8: true,
+                drop_console: true,
+                drop_debugger: true
+            }
+        }),
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: '"production"'
+            }
+        })
+    ]
+
+} else {
+    config.devtool = 'cheap-module-source-map';
+    config.devServer = {
+        historyApiFallback: true
+    }
+    config.plugins = [
+        new webpack.HotModuleReplacementPlugin()
     ]
 }
+
+module.exports = config;
