@@ -2,15 +2,17 @@ import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 
 import Menu from './Menu';
-import Home from './Home';
-import About from './About';
+import Board from './Board';
+import Account from './Account';
 
-export default (props) => (
-    <BrowserRouter>
-        <div className='layout'>
-            <Menu />
-            <Route path='/' exact component={Home} />
-            <Route path='/about' component={About} />
-        </div>
-    </BrowserRouter>
-);
+export default function (props) {
+    return (
+        <BrowserRouter>
+            <div className='layout'>
+                <Menu />
+                <Route path='/' exact component={Board} />
+                <Route path='/user' component={Account} />
+            </div>
+        </BrowserRouter>
+    )
+}
