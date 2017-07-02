@@ -1,0 +1,8 @@
+.comment {
+    padding: 1em;
+    background: #fff;
+    white-space: pre-line;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+    color: #333;
+}
