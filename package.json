@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server --content-base dist/",
     "build": "webpack -p --config webpack.config.prod.js",
-    "server": "node server.js",
+    "server": "node src/server.js",
     "test": "jest",
     "test-watch": "npm test -- --watch"
   },
@@ -17,6 +17,7 @@
   "author": "Bartosz Lorek",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "mongoose": "^4.10.8",
     "react": "^15.3.1",
