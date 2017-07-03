@@ -1,17 +1,13 @@
 /*
-    // usage
-    // send data or error
-    model.find(result(res));
+    // send a JSON response
+    // error or data
+    result(res);
 
-    // send users with data as value
-    model.find(result(res,
-        data => ({ users: data })
-    ));
+    // error or users with data as value
+    result(res, data => ({ users: data }));
 
     // send string status instead of data
-    model.find(result(res,
-        () => ({ status: 'success' })
-    ));
+    result(res, () => ({ status: 'success' }));
 */
 
 module.exports = function (response, callback) {
