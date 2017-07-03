@@ -1,19 +1,19 @@
 var express = require('express');
-var output = require('../utils/output');
-var routes = express.Router();
+var result = require('../utils/result');
+var router = express.Router();
 
 var Comment = require('../models/Comment');
 
-routes.post('/comment', function (req, res) {
-    Comment.create({ text: req.body.text }, output(res));
+router.post('/comment', function (req, res) {
+    Comment.create({ text: req.body.text }, result(res));
 });
 
-routes.get('/comment', function (req, res) {
-    Comment.find(output(res));
+router.get('/comment', function (req, res) {
+    Comment.find(result(res));
 });
 
-routes.get('/comment/:id', function (req, res) {
-    Comment.findById(req.params.id, output(res));
+router.get('/comment/:id', function (req, res) {
+    Comment.findById(req.params.id, result(res));
 });
 
-module.exports = routes;
+module.exports = router;

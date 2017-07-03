@@ -1,16 +1,21 @@
 var express = require('express');
 var mongoose = require('mongoose');
-var routes = express.Router();
+var parser = require('body-parser');
+var router = express.Router();
 
 mongoose.connect('mongodb://localhost/test', {
     useMongoClient: true,
 });
 
-routes.get('/', function (req, res) {
+router.get('/', function (req, res) {
     res.send('api');
 });
 
 // ----------------------------------------
-routes.use('/', require('./routes/comment'));
+router.use('/', require('./routes/comment'));
 
-module.exports = routes;
+module.exports = function (path, app) {
+    app.use(parser.urlencoded({ extended: true }));
+    app.use(parser.json());
+    app.use(path, router);
+};
