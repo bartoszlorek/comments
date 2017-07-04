@@ -15,6 +15,11 @@ router.get('/', function (req, res) {
 router.use('/', require('./routes/comment'));
 
 module.exports = function (path, app) {
+    app.use((req, res, next) => {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        next();
+    });
     app.use(parser.urlencoded({ extended: true }));
     app.use(parser.json());
     app.use(path, router);

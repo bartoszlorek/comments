@@ -33,7 +33,9 @@ module.exports = {
     },
     devtool: 'cheap-module-source-map',
     devServer: {
-        historyApiFallback: true
+        historyApiFallback: true,
+        contentBase: path.join(__dirname, 'dist'),
+        port: 3000
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin()

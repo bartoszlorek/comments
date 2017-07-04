@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addComment } from '../../redux/actions';
+import { fetchComments } from '../../actions/comment';
 import { bind } from '../../utils/reactness';
 
 import style from './Board.css';
@@ -14,13 +14,17 @@ class Board extends React.Component {
         bind(this, ['handleKeyUp']);
     }
 
+    componentWillMount() {
+        this.props.fetchComments();
+    }
+
     handleKeyUp(e) {
-        if (!e.shiftKey && e.key === 'Enter') {
-            this.props.addComment({
-                text: e.target.value
-            });
-            e.target.value = '';
-        }
+        // if (!e.shiftKey && e.key === 'Enter') {
+        //     this.props.addComment({
+        //         text: e.target.value
+        //     });
+        //     e.target.value = '';
+        // }
     }
 
     render() {
@@ -42,13 +46,14 @@ class Board extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        comments: state.comments
+        comments: state.comments.data,
+        loading: state.comments.loading
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        addComment: (value) => dispatch(addComment(value))
+        fetchComments: () => dispatch(fetchComments())
     }
 }
 
