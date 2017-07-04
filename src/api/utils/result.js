@@ -6,7 +6,7 @@
     // error or users with data as value
     result(res, data => ({ users: data }));
 
-    // send string status instead of data
+    // error or string status instead of data
     result(res, () => ({ status: 'success' }));
 */
 
