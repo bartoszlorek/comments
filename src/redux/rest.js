@@ -18,6 +18,16 @@ export default reduxApi({
         postfetch: [
             ({ dispatch, actions }) => dispatch(actions.getComments())
         ]
+    },
+    removeComment: {
+        url: `${api}/comment/:id/delete`,
+        virtual: true,
+        options: {
+            method: 'POST'
+        },
+        postfetch: [
+            ({ dispatch, actions }) => dispatch(actions.getComments())
+        ]
     }
 })
     .use('fetch', adapterFetch(fetch))

@@ -16,4 +16,8 @@ router.get('/comment/:id', function (req, res) {
     Comment.findById(req.params.id, result(res));
 });
 
+router.post('/comment/:id/delete', function (req, res) {
+    Comment.findByIdAndRemove(req.params.id, result(res, () => ({ status: 'success' })));
+});
+
 module.exports = router;

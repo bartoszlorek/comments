@@ -11,7 +11,10 @@ class Board extends React.Component {
 
     constructor(props) {
         super(props);
-        bind(this, ['handleKeyUp']);
+        bind(this, [
+            'handleKeyUp',
+            'handleDelete'
+        ]);
     }
 
     componentWillMount() {
@@ -27,13 +30,19 @@ class Board extends React.Component {
         }
     }
 
+    handleDelete(id) {
+        this.props.removeComment(id);
+    }
+
     render() {
         return (
             <div className={style.board}>
                 {this.props.comments.map((comment, i) =>
                     <Comment
                         key={i}
+                        id={comment._id}
                         text={comment.text}
+                        onDelete={this.handleDelete}
                     />
                 )}
                 <Input
@@ -53,7 +62,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         getComments: () => dispatch(rest.actions.getComments.sync()),
-        addComment: (data) => dispatch(rest.actions.addComment(data))
+        addComment: (data) => dispatch(rest.actions.addComment(data)),
+        removeComment: (id) => dispatch(rest.actions.removeComment({ id })),
     }
 }
 
