@@ -5,7 +5,7 @@ var router = express.Router();
 var Comment = require('../models/Comment');
 
 router.post('/comment', function (req, res) {
-    Comment.create({ text: req.body.text }, result(res));
+    Comment.create({ text: req.query.text }, result(res));
 });
 
 router.get('/comment', function (req, res) {

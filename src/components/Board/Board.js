@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchComments } from '../../actions/comment';
+import rest from '../../redux/rest';
 import { bind } from '../../utils/reactness';
 
 import style from './Board.css';
@@ -15,16 +15,16 @@ class Board extends React.Component {
     }
 
     componentWillMount() {
-        this.props.fetchComments();
+        this.props.getComments();
     }
 
     handleKeyUp(e) {
-        // if (!e.shiftKey && e.key === 'Enter') {
-        //     this.props.addComment({
-        //         text: e.target.value
-        //     });
-        //     e.target.value = '';
-        // }
+        if (!e.shiftKey && e.key === 'Enter') {
+            this.props.addComment({
+                text: e.target.value
+            });
+            e.target.value = '';
+        }
     }
 
     render() {
@@ -46,14 +46,14 @@ class Board extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        comments: state.comments.data,
-        loading: state.comments.loading
+        comments: state.comments.data
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        fetchComments: () => dispatch(fetchComments())
+        getComments: () => dispatch(rest.actions.getComments.sync()),
+        addComment: (data) => dispatch(rest.actions.addComment(data))
     }
 }
 
