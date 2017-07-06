@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import rest from '../../redux/rest';
+import api from '../../api';
 import { bind } from '../../utils/reactness';
 
 import style from './Board.css';
@@ -61,9 +61,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        getComments: () => dispatch(rest.actions.getComments.sync()),
-        addComment: (data) => dispatch(rest.actions.addComment(data)),
-        removeComment: (id) => dispatch(rest.actions.removeComment({ id })),
+        getComments: () => dispatch(api.actions.getComments.sync()),
+        addComment: (data) => dispatch(api.actions.addComment(data)),
+        removeComment: (id) => dispatch(api.actions.removeComment({ id })),
     }
 }
 
