@@ -8,7 +8,7 @@ var Comment = require('../models/Comment');
 router.post('/comment', function (req, res) {
     let { text } = req.query;
     Comment.create({
-        text: text.trim()
+        text: text && text.trim() || ''
     }, result(res));
 });
 

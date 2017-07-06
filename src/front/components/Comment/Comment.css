@@ -1,8 +1,22 @@
 .comment {
+    position: relative;
     padding: 1em;
     background: #fff;
     white-space: pre-line;
     border-bottom: 1px solid #ddd;
-    font-weight: bold;
     color: #333;
+}
+
+.comment:hover .panel {
+    display: flex;
+}
+
+.text {
+    font-weight: bold;
+}
+
+.panel {
+    position: absolute;
+    top: 0; right: 0;
+    display: none;
 }
