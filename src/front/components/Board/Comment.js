@@ -27,7 +27,7 @@ class Comment extends React.Component {
         let text = input.value;
         if (text !== this.props.data.text) {
             this.props.onUpdate({
-                id: this.props.data._id,
+                id: this.props.data.id,
                 text
             });
         }
@@ -35,7 +35,7 @@ class Comment extends React.Component {
     }
 
     handleRemove() {
-        this.props.onRemove(this.props.data._id);
+        this.props.onRemove(this.props.data.id);
     }
 
     render() {

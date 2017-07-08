@@ -1,4 +1,6 @@
 var format = require('./format');
+var isArray = require('lodash/isArray');
+var omit = require('lodash/omit');
 
 module.exports = function (response, success, failure) {
     return function (error, data) {
@@ -16,7 +18,24 @@ module.exports = function (response, success, failure) {
                     return;
                 }
             }
+            data = toOutput(data);
             response.json(format.success(data));
         }
     }
+}
+
+function toOutput(data) {
+    var clean;
+
+    if (isArray(data)) {
+        return data.map(function (item) {
+            return toOutput(item);
+        });
+    }
+    if (typeof data === 'object' && data._id !== undefined) {
+        clean = omit(data.toObject(), ['_id', '__v']);
+        clean.id = data._id;
+        return clean;
+    }
+    return data;
 }

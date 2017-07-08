@@ -39,9 +39,9 @@ class Board extends React.Component {
     render() {
         return (
             <div className={style.board}>
-                {this.props.comments.map((comment, i) =>
+                {this.props.comments.map((comment) =>
                     <Comment
-                        key={comment._id}
+                        key={comment.id}
                         data={comment}
                         onUpdate={this.handleUpdate}
                         onRemove={this.handleRemove}
