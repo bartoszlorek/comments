@@ -4,6 +4,7 @@ var parser = require('body-parser');
 var format = require('./utils/format');
 var router = express.Router();
 
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/test', {
     useMongoClient: true,
 });

@@ -12,6 +12,9 @@ module.exports = function (response, success, failure) {
         } else {
             if (typeof success === 'function') {
                 data = success(data);
+                if (typeof data === 'undefined') {
+                    return;
+                }
             }
             response.json(format.success(data));
         }

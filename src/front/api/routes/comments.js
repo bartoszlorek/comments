@@ -18,6 +18,14 @@ export default {
         },
         postfetch: [updateComments]
     },
+    updateComment: {
+        url: `${URL}/comment/:id/update`,
+        virtual: true,
+        options: {
+            method: 'POST'
+        },
+        postfetch: [updateComments]
+    },
     removeComment: {
         url: `${URL}/comment/:id/delete`,
         virtual: true,

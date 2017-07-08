@@ -9,3 +9,26 @@
     font-size: 16px;
     font-family: 'Lato', sans-serif;
 }
+
+.comment {
+    position: relative;
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+}
+
+.comment:hover .panel {
+    display: flex;
+}
+
+.text {
+    padding: 1em;
+    white-space: pre-line;
+    font-weight: bold;
+}
+
+.panel {
+    position: absolute;
+    top: 0; right: 0;
+    display: none;
+}

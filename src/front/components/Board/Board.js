@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import api from '../../api';
 import { bind } from '../../utils/reactness';
+import api from '../../api';
 
 import style from './Board.css';
-import Comment from '../Comment/Comment';
+import Comment from './Comment';
 import Input from './Input';
 
 class Board extends React.Component {
@@ -12,8 +12,9 @@ class Board extends React.Component {
     constructor(props) {
         super(props);
         bind(this, [
-            'handleKeyUp',
-            'handleDelete'
+            'handleSubmit',
+            'handleUpdate',
+            'handleRemove'
         ]);
     }
 
@@ -21,16 +22,17 @@ class Board extends React.Component {
         this.props.getComments();
     }
 
-    handleKeyUp(e) {
-        if (!e.shiftKey && e.key === 'Enter') {
-            this.props.addComment({
-                text: e.target.value
-            });
-            e.target.value = '';
-        }
+    handleSubmit(input) {
+        this.props.addComment({
+            text: input.value
+        });
     }
 
-    handleDelete(id) {
+    handleUpdate(data) {
+        this.props.updateComment(data);
+    }
+
+    handleRemove(id) {
         this.props.removeComment(id);
     }
 
@@ -39,18 +41,17 @@ class Board extends React.Component {
             <div className={style.board}>
                 {this.props.comments.map((comment, i) =>
                     <Comment
-                        key={i}
-                        id={comment._id}
-                        text={comment.text}
-                        onDelete={this.handleDelete}
+                        key={comment._id}
+                        data={comment}
+                        onUpdate={this.handleUpdate}
+                        onRemove={this.handleRemove}
                     />
                 )}
-                <Input
-                    onKeyUp={this.handleKeyUp}
-                />
+                <Input onEnter={this.handleSubmit} />
             </div>
         )
     }
+
 }
 
 function mapStateToProps(state) {
@@ -63,7 +64,8 @@ function mapDispatchToProps(dispatch) {
     return {
         getComments: () => dispatch(api.actions.getComments.sync()),
         addComment: (data) => dispatch(api.actions.addComment(data)),
-        removeComment: (id) => dispatch(api.actions.removeComment({ id })),
+        updateComment: (data) => dispatch(api.actions.updateComment(data)),
+        removeComment: (id) => dispatch(api.actions.removeComment({ id }))
     }
 }
 
