@@ -4,7 +4,7 @@ import style from './style.css';
 
 import Menu from './Menu/Menu';
 import Board from './Board/Board';
-import Account from './Account';
+import Account from './Account/Account';
 
 export default function (props) {
     return (

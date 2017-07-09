@@ -10,14 +10,18 @@ mongoose.connect('mongodb://localhost/test', {
 });
 
 router.use('/', require('./routes/comment'));
+router.use('/', require('./routes/user'));
+
 router.get('*', (req, res) => {
     res.status(404).json(format.error(null, 404));
 });
 
 module.exports = function (path, app) {
     app.use((req, res, next) => {
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header(
+            'Access-Control-Allow-Headers',
+            'Origin, X-Requested-With, Content-Type, Accept');
         next();
     });
     app.use(parser.urlencoded({ extended: true }));
