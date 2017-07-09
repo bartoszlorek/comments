@@ -2,28 +2,6 @@ var format = require('./format');
 var isArray = require('lodash/isArray');
 var omit = require('lodash/omit');
 
-module.exports = function (response, success, failure) {
-    return function (error, data) {
-        if (error) {
-            var message = error.message;
-            if (typeof failure === 'function') {
-                message = failure(error);
-            }
-            response.json(format.error(message));
-
-        } else {
-            if (typeof success === 'function') {
-                data = success(data);
-                if (typeof data === 'undefined') {
-                    return;
-                }
-            }
-            data = toOutput(data);
-            response.json(format.success(data));
-        }
-    }
-}
-
 function toOutput(data) {
     var clean;
 
@@ -38,4 +16,34 @@ function toOutput(data) {
         return clean;
     }
     return data;
+}
+
+function callback(data, method) {
+    if (typeof method === 'function') {
+        return method(data);
+    }
+    if (typeof method === 'string') {
+        return method;
+    }
+    return data;
+}
+
+module.exports = function (response, success, failure) {
+    return function (error, data) {
+        if (error || data === null) {
+            if (error) {
+                error = error.message;
+            }
+            error = callback(error, failure);
+            response.json(format.error(error));
+
+        } else {
+            data = callback(data, success);
+            if (typeof data === 'undefined') {
+                return;
+            }
+            data = toOutput(data);
+            response.json(format.success(data));
+        }
+    }
 }

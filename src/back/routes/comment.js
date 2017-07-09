@@ -22,14 +22,14 @@ router.post('/comment/:id/update', function (req, res) {
     Comment.findById(req.params.id, result(res,
         (comment) => {
             comment.text = trim(req.query.text);
-            comment.save(result(res, () => 'successfully updated'));
+            comment.save(result(res, 'successfully updated'));
         }
     ));
 });
 
 router.post('/comment/:id/delete', function (req, res) {
     Comment.findByIdAndRemove(req.params.id, result(res,
-        () => 'successfully deleted'
+        'successfully deleted'
     ));
 });
 

@@ -1,6 +1,6 @@
 var express = require('express');
 var mongoose = require('mongoose');
-var color = require('./back/utils/log-color');
+var logColor = require('./back/utils/logColor');
 var api = require('./back');
 var path = require('path');
 
@@ -17,5 +17,5 @@ app.get('*', (req, res) => {
 
 app.listen(PORT, () => {
     var url = 'http://localhost:' + PORT;
-    console.log(`server is running at ${color(url)}`);
+    console.log(`server is running at ${logColor(url)}`);
 });
