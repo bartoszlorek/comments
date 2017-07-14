@@ -2,6 +2,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 var parser = require('body-parser');
 var format = require('./utils/format');
+var auth = require('./auth');
 var router = express.Router();
 
 mongoose.Promise = global.Promise;
@@ -24,6 +25,7 @@ module.exports = function (path, app) {
             'Origin, X-Requested-With, Content-Type, Accept');
         next();
     });
+    auth(app);
     app.use(parser.urlencoded({ extended: true }));
     app.use(parser.json());
     app.use(path, router);
