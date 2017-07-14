@@ -1,44 +1,22 @@
+var toOutput = require('./toOutput');
 var format = require('./format');
-var isArray = require('lodash/isArray');
-var omit = require('lodash/omit');
+var filter = require('./filter');
 
-function toOutput(data) {
-    var clean;
-
-    if (isArray(data)) {
-        return data.map(function (item) {
-            return toOutput(item);
-        });
-    }
-    if (typeof data === 'object' && data._id !== undefined) {
-        clean = omit(data.toObject(), ['_id', '__v']);
-        clean.id = data._id;
-        return clean;
-    }
-    return data;
-}
-
-function callback(data, method) {
-    if (typeof method === 'function') {
-        return method(data);
-    }
-    if (typeof method === 'string') {
-        return method;
-    }
-    return data;
-}
-
-module.exports = function (response, success, failure) {
+module.exports = function (response, onSuccess, onError, onFailure) {
     return function (error, data) {
-        if (error || data === null) {
+        if (error) {
             if (error) {
                 error = error.message;
             }
-            error = callback(error, failure);
+            error = filter(error, onError);
             response.json(format.error(error));
 
+        } else if (!data) {
+            data = filter(data, onFailure);
+            response.json(format.error(data));
+
         } else {
-            data = callback(data, success);
+            data = filter(data, onSuccess);
             if (typeof data === 'undefined') {
                 return;
             }
