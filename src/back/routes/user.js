@@ -1,53 +1,59 @@
 var express = require('express');
 var passport = require('passport');
-var sanitize = require('mongo-sanitize');
+var isAuth = require('../auth/isAuth');
 var result = require('../utils/result');
+var format = require('../utils/format');
 var trim = require('../utils/trim');
 var router = express.Router();
 
 var User = require('../models/User');
 
-router.get('/users', function (req, res) {
+router.post('/signup', function (req, res, next) {
+    passport.authenticate('signup', result(res, {
+        success: (data) => {
+            data = Object.assign({}, req.body, data);
+            User.create(data, result(res, {
+                success: (user) => req.login(user,
+                    (error) => result(res, {
+                        success: 'new user successfully registered and logged in.',
+                        fail: 'login failed for new user'
+                    })(error, user)
+                )
+            }))
+        },
+        fail: 'username is already taken'
+    }))(req, res, next);
+});
+
+router.post('/login', function (req, res, next) {
+    passport.authenticate('login', result(res, {
+        success: (user) => req.login(user,
+            (error) => result(res, {
+                success: 'user successfully logged in'
+            })(error, user)
+        ),
+        fail: 'incorrect username or password'
+    }))(req, res, next);
+});
+
+router.get('/logout', function (req, res) {
+    req.logout();
+    res.json(format.success('user successfully logged out'));
+});
+
+router.get('/user', function (req, res) {
     User.find(result(res));
 });
 
-router.post('/signup', function (req, res, next) {
-    passport.authenticate('signup', result(res,
-        data => {
-            data = Object.assign({}, req.body, data);
-            User.create(data, result(res,
-                user => req.logIn(user,
-                    err => result(res,
-                        'user registered',
-                        'login failed'
-                    )(err, user)
-                )
-            ));
-        },
-        (error) => error,
-        () => 'user already exists with username ' + req.body.username
-    ))(req, res, next);
+router.get('/user/:id', isAuth, function (req, res) {
+    User.findById(req.params.id, result(res));
 });
 
-router.post('/login', function (req, res) {
-    passport.authenticate('login', function (err, user, info) {
-        console.log(err, user, info)
-    })(req, res, next);
+router.post('/user/:id/delete', isAuth, function (req, res) {
+    User.findByIdAndRemove(req.params.id, result(res, {
+        success: 'user successfully deleted',
+        fail: 'user does not exist'
+    }));
 });
-
-// router.post('/login', function (req, res) {
-//     User.findOne({
-//         $and: [
-//             { email: sanitize(req.body.email) },
-//             { password: sanitize(req.body.password) }
-//         ]
-//     }, result(res,
-//         'user login successful',
-//         'incorrect email or password'
-//     ));
-// });
-
-// console.log('User Not Found with username ' + username);
-// console.log('Invalid Password');
 
 module.exports = router;
