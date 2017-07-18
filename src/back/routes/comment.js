@@ -19,18 +19,21 @@ router.post('/comment', function (req, res) {
 });
 
 router.post('/comment/:id/update', function (req, res) {
-    Comment.findById(req.params.id, result(res,
-        (comment) => {
+    Comment.findById(req.params.id, result(res, {
+        success: (comment) => {
             comment.text = trim(req.query.text);
-            comment.save(result(res, 'successfully updated'));
+            comment.save(result(res, {
+                success: 'comment successfully updated'
+            }));
         }
-    ));
+    }));
 });
 
 router.post('/comment/:id/delete', function (req, res) {
-    Comment.findByIdAndRemove(req.params.id, result(res,
-        'successfully deleted'
-    ));
+    Comment.findByIdAndRemove(req.params.id, result(res, {
+        success: 'comment successfully deleted',
+        fail: 'comment does not exist'
+    }));
 });
 
 module.exports = router;
