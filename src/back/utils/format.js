@@ -1,18 +1,24 @@
-module.exports = {
-    success: (data) => ({
-        status: 'success',
-        data: data
-    }),
-    error: (message, code) => {
-        var error = {
-            status: 'error'
+function method(name, property) {
+    return (data, code, response) => {
+        if (typeof code !== 'number') {
+            code = 200;
         }
-        if (typeof message === 'string') {
-            error.message = message;
+        var output = {
+            status: name,
+            code: code
         }
-        if (typeof code === 'number') {
-            error.code = code;
+        output[property] = data;
+
+        if (response) {
+            return response
+                .status(code)
+                .json(output);
         }
-        return error;
+        return output;
     }
+}
+
+module.exports = {
+    success: method('success', 'data'),
+    error: method('error', 'message')
 }

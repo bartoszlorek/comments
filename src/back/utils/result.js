@@ -9,11 +9,11 @@ module.exports = function (response, callback = {}) {
                 error = error.message;
             }
             error = filter(error, callback.error);
-            response.json(format.error(error));
+            format.error(error, 500, response);
 
         } else if (!data) {
             data = filter(data, callback.fail);
-            response.json(format.error(data));
+            format.error(data, 404, response);
 
         } else {
             data = filter(data, callback.success);
@@ -21,7 +21,7 @@ module.exports = function (response, callback = {}) {
                 return;
             }
             data = toOutput(data);
-            response.json(format.success(data));
+            format.success(data, 200, response);
         }
     }
 }
