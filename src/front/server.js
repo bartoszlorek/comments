@@ -1,14 +1,10 @@
 var express = require('express');
-var mongoose = require('mongoose');
 var toColor = require('./back/utils/toColor');
-var api = require('./back');
 var path = require('path');
+var app = express();
 
 var PORT = process.env.PORT || 8080;
 var BASE = 'dist/index.html';
-
-var app = express();
-api('/api', app);
 
 app.use(express.static('dist'));
 app.get('*', (req, res) => {

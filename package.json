@@ -7,7 +7,7 @@
     "start": "webpack-dev-server",
     "build": "webpack -p --config webpack.config.prod.js",
     "server": "node src/server.js",
-    "server-api": "SET PORT=8080 & npm run server",
+    "server-api": "node src/back/index.js",
     "test": "jest",
     "test-watch": "npm test -- --watch"
   },

@@ -2,29 +2,34 @@ var config = require('./config');
 var express = require('express');
 var mongoose = require('mongoose');
 var parser = require('body-parser');
-var format = require('./utils/format');
+var toColor = require('./utils/toColor');
+var routes = require('./routes');
 var auth = require('./auth');
-var router = express.Router();
+var api = express();
+
+var PORT = process.env.PORT || 8080;
+var ROOT = process.env.ROOT || '/api';
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.database, {
     useMongoClient: true,
 });
 
-router.use('/', require('./routes/comment'));
-router.use('/', require('./routes/user'));
-router.get('*', (req, res) => format.error(null, 404, res));
+auth(api);
+api.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+});
 
-module.exports = function (path, app) {
-    app.use((req, res, next) => {
-        res.header('Access-Control-Allow-Origin', '*');
-        res.header('Access-Control-Allow-Headers',
-            'Origin, X-Requested-With, Content-Type, Accept');
-        next();
-    });
+api.use(parser.json());
+api.use(parser.urlencoded({
+    extended: true
+}));
 
-    auth(app);
-    app.use(parser.urlencoded({ extended: true }));
-    app.use(parser.json());
-    app.use(path, router);
-}
+api.use(ROOT, routes);
+api.listen(PORT, () => {
+    var url = 'http://localhost:' + PORT + ROOT;
+    console.log(`api is running at ${toColor(url)}`);
+});

@@ -7,8 +7,8 @@ var jwt = require('./strategy/jwt');
 
 var User = require('../models/User');
 
-module.exports = function (app) {
-    app.use(passport.initialize());
+module.exports = function (api) {
+    api.use(passport.initialize());
     passport.use('signup', new LocalStrategy(signup));
     passport.use('login', new LocalStrategy(login));
     passport.use('auth', jwt);
