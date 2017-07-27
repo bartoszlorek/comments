@@ -7,9 +7,6 @@ var routes = require('./routes');
 var auth = require('./auth');
 var api = express();
 
-var PORT = process.env.PORT || 8080;
-var ROOT = process.env.ROOT || '/api';
-
 mongoose.Promise = global.Promise;
 mongoose.connect(config.database, {
     useMongoClient: true,
@@ -28,8 +25,8 @@ api.use(parser.urlencoded({
     extended: true
 }));
 
-api.use(ROOT, routes);
-api.listen(PORT, () => {
-    var url = 'http://localhost:' + PORT + ROOT;
+api.use(config.root, routes);
+api.listen(config.port, () => {
+    var url = 'http://localhost:' + config.port + config.root;
     console.log(`api is running at ${toColor(url)}`);
 });
