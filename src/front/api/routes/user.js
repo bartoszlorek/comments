@@ -6,14 +6,13 @@ export default {
         reducerName: 'user',
         options: {
             method: 'POST'
-        }    
+        }
     },
     login: {
         url: `${URL_API}/login`,
         virtual: true,
         options: {
             method: 'POST'
-        },
-        postfetch: [updateComments]
+        }
     }
 }

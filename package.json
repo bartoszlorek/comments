@@ -2,12 +2,12 @@
   "name": "comments",
   "version": "0.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "src/front/index.js",
   "scripts": {
     "start": "webpack-dev-server",
     "build": "webpack -p --config webpack.config.prod.js",
     "server": "node src/front/server.js",
-    "server-api": "node src/back/index.js",
+    "server-api": "node src/back/server.js",
     "test": "jest",
     "test-watch": "npm test -- --watch"
   },
