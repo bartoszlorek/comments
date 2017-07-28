@@ -1,8 +1,12 @@
 var router = require('express').Router();
 var message = require('../utils/message');
 
-router.use('/', require('./comment'));
-router.use('/', require('./user'));
+require('fs').readdirSync(__dirname).forEach(file => {
+    if (file !== 'index.js') {
+        router.use('/', require('./' + file));
+    }
+});
+
 router.get('*', (req, res) => {
     message.error(null, 404, res);
 });
