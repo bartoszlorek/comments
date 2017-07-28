@@ -1,5 +1,5 @@
 var toOutput = require('./toOutput');
-var format = require('./format');
+var message = require('./message');
 var filter = require('./filter');
 
 module.exports = function (response, callback = {}) {
@@ -9,11 +9,11 @@ module.exports = function (response, callback = {}) {
                 error = error.message;
             }
             error = filter(error, callback.error);
-            format.error(error, 500, response);
+            message.error(error, 500, response);
 
         } else if (!data) {
             data = filter(data, callback.fail);
-            format.error(data, 404, response);
+            message.error(data, 404, response);
 
         } else {
             data = filter(data, callback.success);
@@ -21,7 +21,7 @@ module.exports = function (response, callback = {}) {
                 return;
             }
             data = toOutput(data);
-            format.success(data, 200, response);
+            message.success(data, 200, response);
         }
     }
 }
