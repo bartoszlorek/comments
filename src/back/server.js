@@ -10,6 +10,8 @@ var api = express();
 mongoose.Promise = global.Promise;
 mongoose.connect(config.database, {
     useMongoClient: true,
+}).then(() => {
+    console.log(`db connected to ${toColor(config.database)}`);
 });
 
 auth(api);
