@@ -12,7 +12,7 @@ router.post('/signup', function (req, res, next) {
         success: (data) => {
             data = Object.assign({}, req.body, data);
             User.create(data, result(res, {
-                success: 'new user successfully registered'
+                success: (user) => token(user)
             }))
         },
         fail: 'username is already taken'
@@ -21,7 +21,7 @@ router.post('/signup', function (req, res, next) {
 
 router.post('/login', function (req, res, next) {
     passport.authenticate('login', result(res, {
-        success: (user) => 'JWT ' + token(user),
+        success: (user) => token(user),
         fail: 'incorrect username or password'
     }))(req, res, next);
 });
