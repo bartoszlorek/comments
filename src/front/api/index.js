@@ -11,13 +11,16 @@ const routes = Object.assign({},
 
 const api = reduxApi(routes);
 api.use('fetch', adapterFetch(fetch));
-api.use('options', function () {
-    return {
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
+api.use('options', (url, params, getState) => {
+    const { user: { data: { token } } } = getState();
+    const headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
     }
+    if (token !== '') {
+        headers.Authorization = 'Bearer ' + token;
+    }
+    return { headers }
 });
 
 export default api;

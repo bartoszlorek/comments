@@ -10,14 +10,21 @@ class Account extends React.Component {
     constructor() {
         super();
         bind(this, [
-            'handleSignup'
+            'handleSignup',
+            'handleAuth'
         ]);
     }
 
     handleSignup() {
         this.props.signup({
-            name: 'john',
-            email: 'john@gmail.com',
+            username: 'john',
+            password: 'doe123'
+        });
+    }
+
+    handleAuth() {
+        this.props.auth({
+            username: 'john',
             password: 'doe123'
         });
     }
@@ -27,6 +34,7 @@ class Account extends React.Component {
             <div>
                 <h1>Account</h1>
                 <button onClick={this.handleSignup}>signup</button>
+                <button onClick={this.handleAuth}>auth</button>
             </div>
         )
     }
@@ -41,7 +49,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        signup: (data) => dispatch(api.actions.signup.sync({}, toBody(data)))
+        signup: (data) => dispatch(api.actions.signup.sync({}, toBody(data))),
+        auth: (data) => dispatch(api.actions.auth.sync({}, toBody(data)))
     }
 }
 
