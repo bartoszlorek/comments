@@ -4,6 +4,7 @@ import { bind } from '../../utils/reactness';
 import toBody from '../../utils/toBody';
 
 import api from '../../api';
+import { logoutUser } from '../../api/routes/user';
 
 class Account extends React.Component {
 
@@ -11,7 +12,8 @@ class Account extends React.Component {
         super();
         bind(this, [
             'handleSignup',
-            'handleAuth'
+            'handleAuth',
+            'handleLogout'
         ]);
     }
 
@@ -29,12 +31,17 @@ class Account extends React.Component {
         });
     }
 
+    handleLogout() {
+        this.props.logout();
+    }
+
     render() {
         return (
             <div>
                 <h1>Account</h1>
                 <button onClick={this.handleSignup}>signup</button>
                 <button onClick={this.handleAuth}>auth</button>
+                <button onClick={this.handleLogout}>logout</button>
             </div>
         )
     }
@@ -50,7 +57,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         signup: (data) => dispatch(api.actions.signup.sync({}, toBody(data))),
-        auth: (data) => dispatch(api.actions.auth.sync({}, toBody(data)))
+        auth: (data) => dispatch(api.actions.auth.sync({}, toBody(data))),
+        logout: () => dispatch(logoutUser)
     }
 }
 

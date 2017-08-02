@@ -1,33 +1,38 @@
-import { URL_API } from '../constants';
+import { POST } from '../constants';
 
-const authMethod = (data) => {
-    if (data && data.status === 'success') {
-        return {
-            auth: true,
-            token: data.data
+const authMethod = (response) => {
+    if (response) {
+        if (response.status === 'success') {
+            localStorage.setItem('token', response.data);
+            return {
+                auth: true
+            }
+        } else {
+            localStorage.removeItem('token');
         }
     }
     return {
-        auth: false,
-        token: ''
+        auth: false
+    }
+}
+
+export const logoutUser = () => {
+    return {
+        type: 'USER_LOGOUT'
     }
 }
 
 export default {
     signup: {
-        url: `${URL_API}/signup`,
-        reducerName: 'user',
+        url: '/signup',
+        options: POST,
         transformer: authMethod,
-        options: {
-            method: 'POST'
-        }
+        reducerName: 'user'
     },
     auth: {
-        url: `${URL_API}/login`,
-        reducerName: 'user',
+        url: '/auth',
+        options: POST,
         transformer: authMethod,
-        options: {
-            method: 'POST'
-        }
+        reducerName: 'user'
     }
 }

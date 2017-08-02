@@ -1,4 +1,4 @@
-import { URL_API, DATA_ARRAY } from '../constants';
+import { DATA_ARRAY, POST } from '../constants';
 
 const updateComments = ({ dispatch, actions }) => {
     return dispatch(actions.getComments())
@@ -6,32 +6,26 @@ const updateComments = ({ dispatch, actions }) => {
 
 export default {
     getComments: {
-        url: `${URL_API}/comment`,
+        url: '/comment',
         reducerName: 'comments',
         transformer: DATA_ARRAY
     },
     addComment: {
-        url: `${URL_API}/comment`,
+        url: '/comment',
+        options: POST,
         virtual: true,
-        options: {
-            method: 'POST'
-        },
         postfetch: [updateComments]
     },
     updateComment: {
-        url: `${URL_API}/comment/:id/update`,
+        url: '/comment/:id/update',
+        options: POST,
         virtual: true,
-        options: {
-            method: 'POST'
-        },
         postfetch: [updateComments]
     },
     removeComment: {
-        url: `${URL_API}/comment/:id/delete`,
+        url: '/comment/:id/delete',
+        options: POST,
         virtual: true,
-        options: {
-            method: 'POST'
-        },
         postfetch: [updateComments]
     }
 }

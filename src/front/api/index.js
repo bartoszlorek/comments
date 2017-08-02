@@ -11,14 +11,15 @@ const routes = Object.assign({},
 
 const api = reduxApi(routes);
 api.use('fetch', adapterFetch(fetch));
+api.use('rootUrl', 'http://localhost:8080/api');
 api.use('options', (url, params, getState) => {
-    const { user: { data: { token } } } = getState();
+    const token = localStorage.getItem('token') || null;
     const headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
     }
-    if (token !== '') {
-        headers.Authorization = 'Bearer ' + token;
+    if (token) {
+        headers['Authorization'] = 'Bearer ' + token;
     }
     return { headers }
 });
