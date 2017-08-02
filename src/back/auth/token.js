@@ -9,7 +9,7 @@ module.exports = function (user) {
         email: user.email,
         role: user.role
     }
-    return jwt.sign(token, config.secret, {
+    return 'JWT ' + jwt.sign(token, config.secret, {
         expiresIn: 10080 // in seconds
     });
 }

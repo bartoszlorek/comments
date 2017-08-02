@@ -19,8 +19,8 @@ router.post('/signup', function (req, res, next) {
     }))(req, res, next);
 });
 
-router.post('/login', function (req, res, next) {
-    passport.authenticate('login', result(res, {
+router.post('/auth', function (req, res, next) {
+    passport.authenticate('auth', result(res, {
         success: (user) => token(user),
         fail: 'incorrect username or password'
     }))(req, res, next);
