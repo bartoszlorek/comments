@@ -1,5 +1,5 @@
 import { CALL_API } from 'redux-api-middleware';
-import { defaults } from 'lodash';
+import { defaults, clone, isPlainObject } from 'lodash';
 import toBody from './toBody';
 
 export default function apiCreator(reducers, options) {
@@ -36,15 +36,9 @@ export default function apiCreator(reducers, options) {
                     options
                 );
 
-                apiActions[reducerName][actionName] = (data) => {
-                    if (normalized.method !== 'GET' &&
-                        normalized.method !== 'HEAD') {
-                        normalized.body = toBody(data);
-                    }
-                    return {
-                        [CALL_API]: normalized
-                    }
-                }
+                apiActions[reducerName][actionName] = (params, body) => ({
+                    [CALL_API]: addData(normalized, params, body)
+                });
 
                 currentReducer = createReducer(
                     initialState,
@@ -138,4 +132,41 @@ function createReducer(initialState, types, next) {
                     : state;
         }
     }
+}
+
+function allowBody(action, body) {
+    return action.method !== 'GET'
+        && action.method !== 'HEAD'
+        && isPlainObject(body);
+}
+
+function assign(target, source) {
+    return target ? target : Object.assign({}, source);
+}
+
+function addData(action, params, query) {
+    const withParams = addParams(action.endpoint, params);
+    let copy = null;
+
+    if (action.endpoint !== withParams) {
+        copy = assign(copy, action);
+        copy.endpoint = withParams;
+    }
+    if (allowBody(action, query)) {
+        copy = assign(copy, action);
+        copy.body = toBody(query);
+    }
+    return copy ? copy : action;
+}
+
+function addParams(url, params) {
+    const keys = params && Object.keys(params);
+
+    if (!keys || keys.length === 0) {
+        return url;
+    }
+    return keys.reduce((url, key) => {
+        const regex = new RegExp(`:${key}`, 'g');
+        return url.replace(regex, params[key]);
+    }, url);
 }
