@@ -1,5 +1,6 @@
 export default function (data) {
-    return {
-        body: JSON.stringify(data)
+    if (data && typeof data === 'object') {
+        return JSON.stringify(data);
     }
+    return data;
 }

@@ -1,5 +1,6 @@
 import { CALL_API } from 'redux-api-middleware';
 import { defaults } from 'lodash';
+import toBody from './toBody';
 
 export default function apiCreator(reducers, options) {
     const apiReducers = {};
@@ -35,9 +36,15 @@ export default function apiCreator(reducers, options) {
                     options
                 );
 
-                apiActions[reducerName][actionName] = () => ({
-                    [CALL_API]: normalized
-                });
+                apiActions[reducerName][actionName] = (data) => {
+                    if (normalized.method !== 'GET' &&
+                        normalized.method !== 'HEAD') {
+                        normalized.body = toBody(data);
+                    }
+                    return {
+                        [CALL_API]: normalized
+                    }
+                }
 
                 currentReducer = createReducer(
                     initialState,
