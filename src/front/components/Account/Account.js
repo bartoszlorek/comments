@@ -1,10 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bind } from '../../utils/reactness';
-import toBody from '../../utils/toBody';
 
 import api from '../../api';
-import { logoutUser } from '../../api/routes/user';
 
 class Account extends React.Component {
 
@@ -32,7 +30,7 @@ class Account extends React.Component {
     }
 
     handleLogout() {
-        this.props.logout();
+        //this.props.logout();
     }
 
     render() {
@@ -58,7 +56,7 @@ function mapDispatchToProps(dispatch) {
     return {
         signup: (data) => dispatch(api.actions.signup.sync({}, toBody(data))),
         auth: (data) => dispatch(api.actions.auth.sync({}, toBody(data))),
-        logout: () => dispatch(logoutUser)
+        //logout: () => dispatch(logoutUser)
     }
 }
 

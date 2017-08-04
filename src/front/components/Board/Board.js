@@ -62,10 +62,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        getComments: () => dispatch(api.actions.getComments.sync()),
-        addComment: (data) => dispatch(api.actions.addComment(data)),
-        updateComment: (data) => dispatch(api.actions.updateComment(data)),
-        removeComment: (id) => dispatch(api.actions.removeComment({ id }))
+        getComments: () => dispatch(api.actions.comments.get()),
+        // addComment: (data) => dispatch(api.actions.addComment(data)),
+        // updateComment: (data) => dispatch(api.actions.updateComment(data)),
+        // removeComment: (id) => dispatch(api.actions.removeComment({ id }))
     }
 }
 

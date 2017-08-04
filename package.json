@@ -38,6 +38,7 @@
     "react-router-redux": "^5.0.0-alpha.6",
     "redux": "^3.6.0",
     "redux-api": "^0.10.6",
+    "redux-api-middleware": "^1.0.3",
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {

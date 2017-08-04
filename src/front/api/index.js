@@ -1,27 +1,47 @@
-import reduxApi from 'redux-api';
-import adapterFetch from 'redux-api/lib/adapters/fetch';
+import { combineReducers } from 'redux';
+import apiCreator from '../utils/apiCreator';
 
-import comments from './routes/comments';
-import user from './routes/user';
+// import comments from './routes/comments';
+// import user from './routes/user';
 
-const routes = Object.assign({},
-    comments,
-    user
-);
+const dataJSON = res => res.json().then(json => json.data);
 
-const api = reduxApi(routes);
-api.use('fetch', adapterFetch(fetch));
-api.use('rootUrl', 'http://localhost:8080/api');
-api.use('options', (url, params, getState) => {
-    const token = localStorage.getItem('token') || null;
-    const headers = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+const options = {
+    rootUrl: 'http://localhost:8080/api',
+    headers: () => {
+        const token = localStorage.getItem('token') || null;
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+        if (token) {
+            headers['Authorization'] = 'Bearer ' + token;
+        }
+        return headers;
     }
-    if (token) {
-        headers['Authorization'] = 'Bearer ' + token;
-    }
-    return { headers }
-});
+}
 
-export default api;
+export default apiCreator({
+    comments: {
+        initial: [],
+        actions: {
+            get: {
+                method: 'GET',
+                endpoint: '/comment',
+                success: (action, state, res) => dataJSON(res)
+            },
+            post: {
+                method: 'POST',
+                endpoint: '/comment'
+            },
+            log: null,
+            out: data => data
+        },
+        reducer: function (state, action) {
+            if (action.type === this.out) {
+                //console.log(action)
+            }
+            return state;
+        }
+    }
+}, options);
