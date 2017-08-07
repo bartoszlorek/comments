@@ -1,10 +1,7 @@
-import { combineReducers } from 'redux';
-import apiCreator from '../utils/apiCreator';
+import reduxCreator, { noReturn, getJSON } from '../utils/redux-creator.min';
 
 // import comments from './routes/comments';
 // import user from './routes/user';
-
-const dataJSON = res => res.json().then(json => json.data);
 
 const options = {
     rootUrl: 'http://localhost:8080/api',
@@ -21,27 +18,21 @@ const options = {
     }
 }
 
-export default apiCreator({
+export default reduxCreator({
     comments: {
         initial: [],
         actions: {
             get: {
                 method: 'GET',
                 endpoint: '/comment',
-                success: (action, state, res) => dataJSON(res)
+                success: (action, state, res) => getJSON(res).then(json => json.data)
             },
-            post: {
+            add: {
                 method: 'POST',
-                endpoint: '/comment'
+                endpoint: '/comment',
+                success: noReturn
             },
-            log: null,
-            out: data => data
-        },
-        reducer: function (state, action) {
-            if (action.type === this.out) {
-                //console.log(action)
-            }
-            return state;
+            logout: null
         }
     }
 }, options);

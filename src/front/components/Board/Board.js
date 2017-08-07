@@ -7,6 +7,8 @@ import style from './Board.css';
 import Comment from './Comment';
 import Input from './Input';
 
+console.log(api.actions.comments.get())
+
 class Board extends React.Component {
 
     constructor(props) {
